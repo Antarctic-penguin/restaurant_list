@@ -1,0 +1,54 @@
+<!-- search bar -->
+<div class="container search-bar">
+  <div class="search-bar-outer">
+    <div class="search-bar-inner">
+      <form action="/search">
+        <h4 class="mb-2">尋找餐廳：</h4>
+        <div class="input-group">
+          <input type="text" name="keyword" class="form-control" placeholder="輸入餐廳、分類" aria-label="Restaurant Name..."
+            value="{{keyword}}" aria-describedby="search-button">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
+            data-bs-toggle="dropdown" aria-expanded="false">{{type}}
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <li><a class="dropdown-item" href="/type/中東料理">中東料理</a></li>
+            <li><a class="dropdown-item" href="/type/日本料理">日本料理</a></li>
+            <li><a class="dropdown-item" href="/type/義式餐廳">義式餐廳</a></li>
+            <li><a class="dropdown-item" href="/type/美式餐廳">美式餐廳</a></li>
+            <li><a class="dropdown-item" href="/type/酒吧">酒吧</a></li>
+            <li><a class="dropdown-item" href="/type/咖啡">咖啡館</a></li>
+          </ul>
+          <div class="input-group-append">
+            <button class="btn btn-major" type="submit" id="search-button"><i class="fas fa-search"></i></button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- restaurant list -->
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-10 col-12 mx-auto">
+      <div class="row row-cols-sm-3">
+        {{#each restaurant}}
+        <a href="/restaurants/{{this.name}}" class="text-secondary">
+          <div class="card mb-3">
+            <img class="card-img-top" src="{{this.image}}" alt="{{this.name}}">
+            <div class="card-body p-3">
+              <h6 class="card-title mb-1">{{this.name}}</h6>
+              <div class="restaurant-category mb-1">
+                <i class="fas fa-utensils pr-2"></i>{{this.category}}
+              </div>
+              <span class="badge rounded-pill bg-danger">
+                {{this.rating}}
+                <i class="fas fa-star fa-xs"></i>
+              </span>
+            </div>
+          </div>
+        </a>
+        {{/each}}
+      </div>
+    </div>
+  </div>
+</div>

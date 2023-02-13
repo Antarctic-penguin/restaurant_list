@@ -27,17 +27,14 @@ app.get('/type/:name', (req, res) => {
 
 app.get('/search', (req, res) => {
   const keyword = req.query.keyword.trim()
-  console.log(keyword)
   const type = req.query.type
 
   const restaurantType = restaurantList.results.filter((restaurant) => {
     return restaurant.category === type
   })
-  console.log(restaurantType)
   const restaurantKeyWord = restaurantType.filter((restaurant) => {
     return restaurant.name.trim().toLocaleLowerCase().includes(req.query.keyword.trim().toLocaleLowerCase())
   })
-  console.log(restaurantKeyWord)
   if (restaurantKeyWord.length === 0) {
     res.render('notfound', { keyword, type })
   } else {

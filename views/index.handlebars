@@ -7,17 +7,18 @@
         <div class="input-group">
           <input type="text" name="keyword" class="form-control" placeholder="輸入餐廳、分類" aria-label="Restaurant Name..."
             value="{{keyword}}" aria-describedby="search-button">
-          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
-            data-bs-toggle="dropdown" aria-expanded="false">{{type}}
-          </button>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-            <li><a class="dropdown-item" href="/type/中東料理">中東料理</a></li>
-            <li><a class="dropdown-item" href="/type/日本料理">日本料理</a></li>
-            <li><a class="dropdown-item" href="/type/義式餐廳">義式餐廳</a></li>
-            <li><a class="dropdown-item" href="/type/美式餐廳">美式餐廳</a></li>
-            <li><a class="dropdown-item" href="/type/酒吧">酒吧</a></li>
-            <li><a class="dropdown-item" href="/type/咖啡">咖啡館</a></li>
-          </ul>
+          <select class="form-select" name="type" aria-label="Default select example">
+            <option value="{{type}}" selected>目前選項：{{type}}</option>
+            <option value="全部餐廳">全部餐廳</option>
+            <optgroup label="餐廳種類">
+              <option value="中東料理">中東料理</option>
+              <option value="日本料理">日本料理</option>
+              <option value="義式餐廳">義式餐廳</option>
+              <option value="美式餐廳">美式餐廳</option>
+              <option value="酒吧">酒吧</option>
+              <option value="咖啡館">咖啡館</option>
+            </optgroup>
+          </select>
           <div class="input-group-append">
             <button class="btn btn-major" type="submit" id="search-button"><i class="fas fa-search"></i></button>
           </div>
@@ -31,7 +32,7 @@
   <div class="row">
     <div class="col-md-10 col-12 mx-auto">
       <div class="row row-cols-sm-3">
-        {{#each restaurant}}
+        {{#each restaurants}}
         <a href="/restaurants/{{this.name}}" class="text-secondary">
           <div class="card mb-3">
             <img class="card-img-top" src="{{this.image}}" alt="{{this.name}}">

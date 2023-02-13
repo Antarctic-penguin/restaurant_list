@@ -8,8 +8,8 @@ app.set('view engine', 'handlebars')
 app.use(express.static('public'))
 
 app.get('/', (req, res) => {
-  const type = '餐廳種類'
-  res.render('index', { restaurant: restaurantList.results, type })
+  const type = "全部餐廳"
+  res.render('index', { restaurants: restaurantList.results, type })
 })
 
 app.get('/restaurants/:name', (req, res) => {
@@ -21,22 +21,27 @@ app.get('/restaurants/:name', (req, res) => {
 
 app.get('/type/:name', (req, res) => {
   const type = req.params.name
-  const restaurant = restaurantList.results.filter((restaurant) => {
-    return restaurant.category === req.params.name
-  })
-  res.render('index', { restaurant, type })
+
+  res.render('index', { restaurants, type })
 })
 
 app.get('/search', (req, res) => {
-  const type = '餐廳種類'
   const keyword = req.query.keyword.trim()
-  const restaurant = restaurantList.results.filter((restaurant) => {
+  console.log(keyword)
+  const type = req.query.type
+
+  const restaurantType = restaurantList.results.filter((restaurant) => {
+    return restaurant.category === type
+  })
+  console.log(restaurantType)
+  const restaurantKeyWord = restaurantType.filter((restaurant) => {
     return restaurant.name.trim().toLocaleLowerCase().includes(req.query.keyword.trim().toLocaleLowerCase())
   })
-  if (restaurant.length === 0) {
+  console.log(restaurantKeyWord)
+  if (restaurantKeyWord.length === 0) {
     res.render('notfound', { keyword, type })
   } else {
-    res.render('index', { restaurant, keyword, type })
+    res.render('index', { restaurants: restaurantKeyWord, keyword, type })
   }
 })
 

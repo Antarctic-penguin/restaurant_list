@@ -19,12 +19,6 @@ app.get('/restaurants/:name', (req, res) => {
   res.render('show', { restaurant })
 })
 
-app.get('/type/:name', (req, res) => {
-  const type = req.params.name
-
-  res.render('index', { restaurants, type })
-})
-
 app.get('/search', (req, res) => {
   const keyword = req.query.keyword.trim()
   const type = req.query.type

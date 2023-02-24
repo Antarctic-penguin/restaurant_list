@@ -10,12 +10,9 @@
             <option value="{{type}}" selected>目前選項：{{type}}</option>
             <option value="全部餐廳">全部餐廳</option>
             <optgroup label="餐廳種類">
-              <option value="中東料理">中東料理</option>
-              <option value="日本料理">日本料理</option>
-              <option value="義式餐廳">義式餐廳</option>
-              <option value="美式餐廳">美式餐廳</option>
-              <option value="酒吧">酒吧</option>
-              <option value="咖啡館">咖啡館</option>
+              {{#each restaurantCategory}}
+              <option value="{{this}}">{{this}}</option>
+              {{/each}}
             </optgroup>
           </select>
           <div class="input-group-append">

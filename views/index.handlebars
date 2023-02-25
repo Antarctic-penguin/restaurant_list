@@ -2,7 +2,7 @@
 <div class="container search-bar">
   <div class="search-bar-outer">
     <div class="search-bar-inner">
-      <form action="/search" id="search">
+      <form action="/restaurants/search/{{sortRoute}}" id="search">
         <h4 class="mb-2">尋找餐廳：</h4>
         <div class="input-group">
           <input type="text" name="keyword" class="form-control w-25" placeholder="輸入餐廳、分類"
@@ -30,7 +30,8 @@
     <div class="col-md-10 col-12 mx-auto">
       <div class="d-flex justify-content-end">
         <h4 class="col-5 mb-3 text-end py-1">排序方式：</h4>
-        <form action="{{#if search}}search{{/if}}/sort" class="col-3 mb-3">
+        <form action="/restaurants/sort/{{#if keywordRoute}}{{keywordRoute}}{{else}}notKeyWord{{/if}}/{{typeRoute}}"
+          class="col-3 mb-3">
           <select class="form-select" name="sort" onchange="this.form.submit()">
             <option value="{{sort}}" selected disabled>{{sort}}</option>
             <option value="A->Z">A->Z</option>
@@ -93,4 +94,4 @@
   </div>
 </div>
 
-<script src="/javascripts/text.js"></script>
+<script src="/javascripts/deleteModal.js"></script>

@@ -65,8 +65,40 @@
     </div>
   </form>
   <div class="d-flex justify-content-end">
-    <form action="/restaurants/{{restaurant._id}}?_method=DELETE" method="POST">
-      <button type="submit" class="btn btn-danger text-white mx-3">刪除資料</button>
-    </form>
+    <button type="button" data-bs-toggle="modal" data-bs-target="#deleteModal"
+      class="btn btn-danger text-white mx-3">刪除資料</button>
+  </div>
+</div>
+
+<div class="modal" tabindex="-1" id="deleteModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">確定要刪除該餐廳嗎?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="modalBody">
+        <img class="card-img-top" src="{{restaurant.image}}" alt="${data.name}" />
+        <div class="card-body p-3">
+          <h6 class="card-title mb-1 text-secondary">{{restaurant.name}}</h6>
+
+          <div class="restaurant-category mb-1">
+            <i class="fas fa-utensils pr-2"></i>
+            {{restaurant.category}}
+          </div>
+
+          <span class="badge bg-danger ">
+            {{restaurant.rating}}
+            <i class="fas fa-star fa-xs"></i>
+          </span>
+        </div>
+      </div>
+      <div class="modal-footer" id="modalFooter">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+        <form action="/restaurants/{{restaurant._id}}?_method=DELETE" method="POST">
+          <button type="submit" class="btn btn-danger">確定刪除</button>
+        </form>
+      </div>
+    </div>
   </div>
 </div>

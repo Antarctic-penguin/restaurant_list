@@ -4,7 +4,7 @@ const restaurantList = require('../../models/restaurant')
 const restaurantCategory = require('../../restaurantcategory')
 
 // 餐廳詳細頁面
-router.get('/restaurants/details/:name', (req, res) => {
+router.get('/details/:name', (req, res) => {
   restaurantList.find({ name: req.params.name })
     .lean()
     .then(restaurant => res.render('show', { restaurant: restaurant[0] }))

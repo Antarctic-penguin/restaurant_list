@@ -1,7 +1,7 @@
 const express = require('express')        // 引用 Express 與 Express 路由器
 const router = express.Router()          // 準備引入路由模組
 const restaurantList = require('../../models/restaurant')
-const restaurantCategory = require('../../restaurantcategory')
+
 
 // 餐廳詳細頁面
 router.get('/details/:name', (req, res) => {
@@ -13,6 +13,7 @@ router.get('/details/:name', (req, res) => {
 
 // 搜尋餐廳
 router.get('/search/:sort', (req, res) => {
+  const restaurantCategory = require('../../restaurantcategory')
   let sort = req.params.sort
   const sortRoute = req.params.sort
   const keyword = req.query.keyword
@@ -51,6 +52,7 @@ router.get('/search/:sort', (req, res) => {
 })
 // 排序
 router.get('/sort/:keyword/:type', (req, res) => {
+  const restaurantCategory = require('../../restaurantcategory')
   let sort = req.query.sort
   const sortRoute = req.query.sort
   let keyword = req.params.keyword
@@ -92,6 +94,7 @@ router.get('/sort/:keyword/:type', (req, res) => {
 
 // 新增餐廳頁面
 router.get('/new', (req, res) => {
+  const restaurantCategory = require('../../restaurantcategory')
   res.render('new', { restaurantCategory: restaurantCategory.category })
 })
 // 新增餐廳路由

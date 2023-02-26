@@ -7,7 +7,7 @@ require('./config/mongoose')
 
 // const restaurantList = require('./models/restaurant')
 // const restaurantCategory = require('./restaurantcategory.js')
-const port = 3000
+const PORT = process.env.PORT || 3000;
 
 const app = express()
 
@@ -19,6 +19,6 @@ app.use(methodOverride('_method'))
 
 app.use(routes)
 
-app.listen(port, () => {
-  console.log(`Express is listening on http://localhost:${port}`)
+app.listen(PORT, () => {
+  console.log(`Express is listening on http://localhost:${PORT}`)
 })

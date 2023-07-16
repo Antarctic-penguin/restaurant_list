@@ -13,6 +13,7 @@ router.get('/details/:name', (req, res) => {
 
 // 搜尋餐廳
 router.get('/search/:sort', (req, res) => {
+  const userId = req.user._id
   const restaurantCategory = require('../../restaurantcategory')
   let sort = req.params.sort
   const sortRoute = req.params.sort
@@ -20,9 +21,9 @@ router.get('/search/:sort', (req, res) => {
   const type = req.query.type
   const typeRoute = req.query.type
   const keywordRoute = req.query.keyword
-  let restaurantType = restaurantList.find({ category: type }).lean()
+  let restaurantType = restaurantList.find({ category: type, userId }).lean()
   if (type === '全部餐廳') {
-    restaurantType = restaurantList.find().lean()
+    restaurantType = restaurantList.find({ userId }).lean()
   }
   if (sortRoute === 'A->Z') {
     restaurantType = restaurantType.sort({ name: 'asc' })
@@ -52,6 +53,7 @@ router.get('/search/:sort', (req, res) => {
 })
 // 排序
 router.get('/sort/:keyword/:type', (req, res) => {
+  const userId = req.user._id
   const restaurantCategory = require('../../restaurantcategory')
   let sort = req.query.sort
   const sortRoute = req.query.sort
@@ -59,9 +61,9 @@ router.get('/sort/:keyword/:type', (req, res) => {
   const keywordRoute = req.params.keyword
   const type = req.params.type
   const typeRoute = req.params.type
-  let restaurantType = restaurantList.find({ category: type }).lean()
+  let restaurantType = restaurantList.find({ category: type, userId }).lean()
   if (type === '全部餐廳') {
-    restaurantType = restaurantList.find().lean()
+    restaurantType = restaurantList.find({ userId }).lean()
   }
   if (sortRoute === 'A->Z') {
     restaurantType = restaurantType.sort({ name: 'asc' })
@@ -99,32 +101,35 @@ router.get('/new', (req, res) => {
 })
 // 新增餐廳路由
 router.post('/', (req, res) => {
+  const userId = req.user._id
   let { name, name_en, category, image, location, phone, google_map, rating, description } = req.body
   // 勾選沒有圖片的
   if (req.body.notPicture === 'on') {
     image = 'https://fakeimg.pl/550x410/?text=not%20pictured'
   }
-  restaurantList.create({ name, name_en, category, image, location, phone, google_map, rating, description })
+  restaurantList.create({ name, name_en, category, image, location, phone, google_map, rating, description, userId })
     .then(() => res.redirect('/'))
     .catch(error => console.error(error))
 
 })
 // 編輯餐廳頁面
 router.get('/edit/:name', (req, res) => {
-  restaurantList.find({ name: req.params.name })
+  const userId = req.user._id
+  restaurantList.find({ name: req.params.name, userId })
     .lean()
     .then(restaurant => res.render('edit', { restaurant: restaurant[0] }))
     .catch(error => console.error(error))
 })
 // 編輯餐廳路由
 router.put('/:id', (req, res) => {
-  restaurantList.findByIdAndUpdate(req.params.id, req.body)
+  restaurantList.findOneAndUpdate({ _id: req.params.id, userId }, req.body)
     .then(() => res.redirect(`/restaurants/details/${req.body.name}`))
     .catch(err => console.log(err))
 })
 // 刪除餐廳路由
 router.delete('/:id', (req, res) => {
-  restaurantList.findById(req.params.id)
+  const userId = req.user._id
+  restaurantList.findOne({ _id: req.params.id, userId })
     .then(restaurant => restaurant.remove())
     .then(() => res.redirect('/'))
     .catch(err => console.log(err))

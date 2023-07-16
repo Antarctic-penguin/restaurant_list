@@ -28,8 +28,9 @@
 <div class="container mt-5">
   <div class="row">
     <div class="col-md-10 col-12 mx-auto">
-      <div class="d-flex justify-content-end">
-        <h4 class="col-5 mb-3 text-end py-1">排序方式：</h4>
+      <div class="d-flex justify-content-between">
+        <a href="/restaurants/new"><button class="btn btn-secondary">新增餐廳</button></a>
+        <h4 class="col-5 mb-3 text-end py-1 ms-auto">排序方式：</h4>
         <form action="/restaurants/sort/{{#if keywordRoute}}{{keywordRoute}}{{else}}notKeyWord{{/if}}/{{typeRoute}}"
           class="col-3 mb-3">
           <select class="form-select" name="sort" onchange="this.form.submit()">

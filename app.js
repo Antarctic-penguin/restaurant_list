@@ -6,6 +6,9 @@ const routes = require('./routes')
 const session = require('express-session')
 const usePassport = require('./config/passport')
 const flash = require('connect-flash')
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
 require('./config/mongoose')
 
 // const restaurantList = require('./models/restaurant')
@@ -20,7 +23,7 @@ app.use(express.static('public'))
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
 app.use(session({
-  secret: 'ThisIsMySecret',
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true
 }))

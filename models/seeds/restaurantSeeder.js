@@ -1,21 +1,59 @@
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
+const bcrypt = require("bcryptjs")
+const Restaurant = require('../../models/restaurant')
+const User = require('../user')
 const db = require('../../config/mongoose')
-const restaurant = require('../restaurant') // 載入 todo model
-const restaurantList = require('../../restaurant.json')
-db.once('open', () => {
-  // Model.create()  是可以傳 Array 進去的，所以在產生種子資料的時候可以直接將 restaurantList.results 傳入 Restaurant.create 中
-  restaurant.create(restaurantList.results)
-  // restaurantList.results.forEach((item) => {
-  //   restaurant.create({
-  //     name: item.name,
-  //     name_en: item.name_en,
-  //     category: item.category,
-  //     image: item.image,
-  //     location: item.location,
-  //     phone: item.phone,
-  //     google_map: item.google_map,
-  //     rating: item.rating,
-  //     description: item.description,
-  //   })
-  // })
-  console.log('mongodb connected!')
+
+const restaurantList = require('../seeds/restaurant.json').results
+
+const SEED_USERS = [
+  {
+    name: "user1",
+    email: "user1@example.com",
+    password: "12345678",
+    restaurantIndex: [0, 1, 2],
+  },
+  {
+    name: "user2",
+    email: "user2@example.com",
+    password: "12345678",
+    restaurantIndex: [3, 4, 5],
+  },
+  {
+    name: "user3",
+    email: "user3@example.com",
+    password: "12345678",
+    restaurantIndex: [6, 7],
+  },
+]
+
+
+db.once("open", () => {
+
+  return Promise.all(
+
+    SEED_USERS.map((user) => {
+      const { name, email, password, restaurantIndex } = user
+      return User.create({
+        name,
+        email,
+        password: bcrypt.hashSync(password, bcrypt.genSaltSync(10))
+      })
+        .then((user) => {
+          const userId = user._id
+          const restaurants = restaurantIndex.map((index) => {
+            return { ...restaurantList[index], userId }
+          })
+          return Restaurant.create(restaurants)
+        })
+        .catch((error) => console.log(error))
+    })
+  )
+    .then(() => {
+      console.log("restaurantSeeder done!")
+      process.exit()
+    })
+    .catch((error) => console.log(error))
 })

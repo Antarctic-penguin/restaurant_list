@@ -21,26 +21,20 @@ const SEED_USERS = [
     password: "12345678",
     restaurantIndex: [3, 4, 5],
   },
-  {
-    name: "user3",
-    email: "user3@example.com",
-    password: "12345678",
-    restaurantIndex: [6, 7],
-  },
 ]
 
-
 db.once("open", () => {
-
   return Promise.all(
-
     SEED_USERS.map((user) => {
       const { name, email, password, restaurantIndex } = user
-      return User.create({
-        name,
-        email,
-        password: bcrypt.hashSync(password, bcrypt.genSaltSync(10))
-      })
+      return bcrypt
+        .genSalt(10)
+        .then(salt => bcrypt.hash(password, salt))
+        .then(hash => User.create({
+          name: name,
+          email: email,
+          password: hash
+        }))
         .then((user) => {
           const userId = user._id
           const restaurants = restaurantIndex.map((index) => {

@@ -122,6 +122,7 @@ router.get('/edit/:name', (req, res) => {
 })
 // 編輯餐廳路由
 router.put('/:id', (req, res) => {
+  const userId = req.user._id
   restaurantList.findOneAndUpdate({ _id: req.params.id, userId }, req.body)
     .then(() => res.redirect(`/restaurants/details/${req.body.name}`))
     .catch(err => console.log(err))

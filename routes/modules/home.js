@@ -1,7 +1,8 @@
 const express = require('express')
 const router = express.Router()
 const restaurant = require('../../models/restaurant')
-const restaurantCategory = require('../../restaurantcategory')
+const { getCategory } = require('../../restaurantcategory');
+let restaurantCategory = []
 
 //餐廳主頁面 
 router.get('/', (req, res) => {
@@ -10,9 +11,12 @@ router.get('/', (req, res) => {
   const sortRoute = "notSort"
   const keywordRoute = 'notKeyWord'
   const userId = req.user._id
-  restaurant.find({ userId })
-    .lean()
-    .then(restaurants => res.render('index', { restaurants, type, restaurantCategory: restaurantCategory.category, sortRoute, keywordRoute, typeRoute }))
+  getCategory()
+    .then(categories=>{
+      restaurantCategory = categories
+      return restaurant.find({ userId }).lean();
+    })
+    .then(restaurants => res.render('index', { restaurants, type, restaurantCategory, sortRoute, keywordRoute, typeRoute }))
     .catch(error => console.error(error))
 })
 
